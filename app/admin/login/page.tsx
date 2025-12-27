@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Lock, User, Loader2, ArrowRight } from "lucide-react";
+import { Lock, Mail, Loader2, ArrowRight } from "lucide-react";
 import styles from "./Login.module.css";
+import { authClient } from "@/lib/auth-client";
 
 export default function AdminLogin() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -18,25 +19,21 @@ export default function AdminLogin() {
     setLoading(true);
     setError("");
 
-    try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-
-      if (res.ok) {
-        router.push("/admin");
-        router.refresh();
-      } else {
-        const data = await res.json();
-        setError(data.error || "Invalid credentials");
+    await authClient.signIn.email(
+      {
+        email,
+        password,
+      },
+      {
+        onRequest: () => setLoading(true),
+        onResponse: () => setLoading(false),
+        onError: (ctx) => setError(ctx.error.message || "Invalid credentials"),
+        onSuccess: () => {
+          router.push("/admin");
+          router.refresh();
+        },
       }
-    } catch (err) {
-      setError("An unexpected error occurred");
-    } finally {
-      setLoading(false);
-    }
+    );
   };
 
   return (
@@ -60,13 +57,13 @@ export default function AdminLogin() {
         <form onSubmit={handleLogin} className={styles.form}>
           <div className={styles.inputGroup}>
             <label>
-              <User size={16} /> Username
+              <Mail size={16} /> Email
             </label>
             <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="admin"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="admin@amce-daddy.com"
               required
             />
           </div>

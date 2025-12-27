@@ -1,7 +1,10 @@
 import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
 import { Project } from "@/types/project";
+import * as schema from "./schema";
 
 let sqlInstance: any = null;
+let dbInstance: any = null;
 
 const getSql = () => {
   if (sqlInstance) return sqlInstance;
@@ -13,7 +16,9 @@ const getSql = () => {
   return sqlInstance;
 };
 
-// Use this for all queries
+export const db = drizzle(getSql(), { schema });
+
+// Use this for all raw queries
 export const sql = (...args: any[]) => (getSql() as any)(...args);
 
 export async function getFeaturedProjects(): Promise<Project[]> {

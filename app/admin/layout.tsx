@@ -11,6 +11,7 @@ import {
   Home,
   Sparkles,
 } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
 
 export default function AdminLayout({
   children,
@@ -40,9 +41,14 @@ export default function AdminLayout({
   ];
 
   const handleLogout = async () => {
-    await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/admin/login");
-    router.refresh();
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("/admin/login");
+          router.refresh();
+        },
+      },
+    });
   };
 
   // Don't show sidebar on login page

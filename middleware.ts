@@ -3,33 +3,31 @@ import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const isAuthPage = pathname === "/admin/login";
+  const isAdminPage = pathname.startsWith("/admin");
+  const isApiAdmin = ["/api/projects", "/api/settings", "/api/services", "/api/upload"].some(api => pathname.startsWith(api));
 
-  // Protect Admin Pages
-  if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
-    const session = request.cookies.get("admin_session");
+  // Better Auth session cookie
+  const sessionCookie = request.cookies.get("better-auth.session_token") || 
+                        request.cookies.get("__secure-next-auth.session-token");
 
-    if (!session || session.value !== "authenticated_amcee_2025") {
+  if (isAdminPage && !isAuthPage) {
+    if (!sessionCookie) {
       const url = request.nextUrl.clone();
       url.pathname = "/admin/login";
       return NextResponse.redirect(url);
     }
   }
 
-  // Redirect from login if already authenticated
-  if (pathname === "/admin/login") {
-    const session = request.cookies.get("admin_session");
-    if (session && session.value === "authenticated_amcee_2025") {
-      const url = request.nextUrl.clone();
-      url.pathname = "/admin";
-      return NextResponse.redirect(url);
-    }
+  if (isAuthPage && sessionCookie) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/admin";
+    return NextResponse.redirect(url);
   }
 
   // Protect non-GET Admin APIs
-  const protectedApis = ["/api/projects", "/api/settings", "/api/services", "/api/upload"];
-  if (protectedApis.some(api => pathname.startsWith(api)) && request.method !== "GET") {
-    const session = request.cookies.get("admin_session");
-    if (!session || session.value !== "authenticated_amcee_2025") {
+  if (isApiAdmin && request.method !== "GET") {
+    if (!sessionCookie) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
   }

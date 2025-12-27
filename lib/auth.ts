@@ -1,15 +1,11 @@
 import { betterAuth } from "better-auth";
-import { neon } from "@neondatabase/serverless";
-
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL is not defined");
-}
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { db } from "./db";
 
 export const auth = betterAuth({
-    database: {
-        provider: "postgresql",
-        url: process.env.DATABASE_URL,
-    },
+    database: drizzleAdapter(db, {
+        provider: "pg",
+    }),
     emailAndPassword: {
         enabled: true,
     },
