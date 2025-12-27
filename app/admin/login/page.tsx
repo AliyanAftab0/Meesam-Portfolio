@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Lock, Mail, Loader2, ArrowRight } from "lucide-react";
+import { Lock, User, Loader2, ArrowRight } from "lucide-react";
 import styles from "./Login.module.css";
 import { authClient } from "@/lib/auth-client";
 
 export default function AdminLogin() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -19,9 +19,9 @@ export default function AdminLogin() {
     setLoading(true);
     setError("");
 
-    await authClient.signIn.email(
+    await authClient.signIn.username(
       {
-        email,
+        username,
         password,
       },
       {
@@ -57,13 +57,13 @@ export default function AdminLogin() {
         <form onSubmit={handleLogin} className={styles.form}>
           <div className={styles.inputGroup}>
             <label>
-              <Mail size={16} /> Email
+              <User size={16} /> Username
             </label>
             <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@amce-daddy.com"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="admin"
               required
             />
           </div>
