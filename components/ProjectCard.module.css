@@ -1,0 +1,91 @@
+.card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--surface);
+  transition: transform 0.3s ease;
+}
+
+.link {
+  display: block;
+  width: 100%;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  background: var(--surface);
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  transition: transform 0.8s var(--transition-slow);
+}
+
+.card:hover .image {
+  transform: scale(1.1);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
+  display: flex;
+  align-items: flex-end;
+  padding: 2rem;
+  opacity: 0;
+  transition: opacity 0.4s var(--transition-smooth);
+}
+
+.card:hover .overlay {
+  opacity: 1;
+}
+
+.content {
+  transform: translateY(20px);
+  transition: transform 0.5s var(--transition-smooth);
+}
+
+.card:hover .content {
+  transform: translateY(0);
+}
+
+.category {
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.skills {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.skillTag {
+  font-size: 0.7rem;
+  padding: 0.3rem 0.8rem;
+  background: rgba(255,255,255,0.1);
+  border-radius: 100px;
+  backdrop-filter: blur(4px);
+}
+
+@media (max-width: 768px) {
+  .overlay {
+    opacity: 1;
+  }
+  .content {
+    transform: translateY(0);
+  }
+}

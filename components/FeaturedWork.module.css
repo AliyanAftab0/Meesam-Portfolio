@@ -1,0 +1,46 @@
+.section {
+  padding: var(--spacing-xl) 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: var(--spacing-lg);
+}
+
+.title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+}
+
+.viewAll {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.viewAll:hover {
+  color: var(--accent);
+}
+
+.viewAllArrow {
+  transition: transform 0.3s var(--transition-smooth);
+}
+
+.viewAll:hover .viewAllArrow {
+  transform: translateX(5px);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

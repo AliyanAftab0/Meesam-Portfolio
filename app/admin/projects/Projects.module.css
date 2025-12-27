@@ -1,0 +1,175 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.headerMain h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.headerMain p {
+  color: var(--text-secondary);
+}
+
+.addBtn {
+  background: var(--accent);
+  color: var(--background);
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  transition: all 0.2s;
+}
+
+.addBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px var(--accent-muted);
+}
+
+.tableContainer {
+  background: var(--surface);
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.projectTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.tableHeader {
+  padding: 1.2rem 2rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-bottom: 1px solid var(--border);
+}
+
+.tableCell {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.95rem;
+}
+
+.projectTitle {
+  font-weight: 600;
+}
+
+.categoryTag {
+  padding: 0.4rem 0.8rem;
+  background: rgba(255,255,255,0.05);
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+
+.featuredTag {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.isFeatured {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.actionIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.03);
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+
+.actionIcon:hover {
+  background: rgba(255,255,255,0.08);
+  color: var(--foreground);
+}
+
+.actionIcon.delete:hover {
+  background: rgba(255, 77, 77, 0.1);
+  color: #ff4d4d;
+}
+
+/* Modal */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 1rem;
+}
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  width: 100%;
+  max-width: 600px;
+  border-radius: 24px;
+  padding: 2.5rem;
+}
+
+.modal h2 {
+  margin-bottom: 2rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.formInput, .formSelect, .formTextarea {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  color: #fff;
+  width: 100%;
+}
+
+.formCheckbox {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.9rem;
+}
+
+.checkboxInput {
+  width: auto !important;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.submitBtn {
+  background: var(--accent);
+  color: var(--background);
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+}

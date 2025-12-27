@@ -1,0 +1,174 @@
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding-top: 100px;
+  padding-bottom: 50px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.content {
+  position: relative;
+  z-index: 10;
+}
+
+.smallTitle {
+  display: block;
+  font-size: 0.9rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
+
+.headline {
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  line-height: 1.05;
+  margin-bottom: 2.5rem;
+}
+
+.subheadline {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  max-width: 550px;
+  margin-bottom: 3.5rem;
+}
+
+.ctaGroup {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.primaryBtn {
+  background: var(--foreground);
+  color: var(--background);
+  padding: 1.2rem 3rem;
+  border-radius: 100px;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.secondaryBtn {
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.btnArrow {
+  transition: transform 0.3s var(--transition-smooth);
+}
+
+.secondaryBtn:hover .btnArrow {
+  transform: translateX(5px);
+}
+
+/* Image Integration */
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  justify-self: center;
+  z-index: 5;
+  opacity: 0; /* Managed by GSAP */
+  background: #000; /* Solid black to mask checkerboard */
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.portrait {
+  width: 100%;
+  height: auto;
+  display: block;
+  position: relative;
+  z-index: 2;
+  filter: contrast(1.05) brightness(0.95);
+  object-fit: cover;
+}
+
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 70%,
+    var(--background) 95%
+  );
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Decorative Background Elements */
+.glassCircle {
+  position: absolute;
+  top: 10%;
+  right: -5%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--accent-muted) 0%, transparent 70%);
+  filter: blur(80px);
+  z-index: 1;
+  opacity: 0.5;
+}
+
+.glassCircleSmall {
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+  filter: blur(60px);
+  z-index: 1;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 5rem;
+    text-align: center;
+  }
+  
+  .content {
+    max-width: 100%;
+  }
+
+  .subheadline {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .ctaGroup {
+    justify-content: center;
+  }
+
+  .imageWrapper {
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding-top: 120px;
+  }
+
+  .headline {
+    font-size: 3rem;
+  }
+  
+  .ctaGroup {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}

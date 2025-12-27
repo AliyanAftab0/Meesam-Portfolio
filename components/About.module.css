@@ -1,0 +1,36 @@
+.about {
+  padding: var(--spacing-xl) 0;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.description p {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
