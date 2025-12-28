@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import styles from "./Admin.module.css";
@@ -10,6 +11,8 @@ import {
   LogOut,
   Home,
   Sparkles,
+  Menu,
+  X,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 
@@ -20,6 +23,12 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   const menuItems = [
     { name: "Overview", href: "/admin", icon: <LayoutDashboard size={20} /> },
@@ -58,7 +67,33 @@ export default function AdminLayout({
 
   return (
     <div className={styles.adminContainer}>
-      <aside className={styles.sidebar}>
+      {/* Mobile Top Bar */}
+      <header className={styles.mobileHeader}>
+        <Link href="/" className={styles.logo}>
+          AD <span className={styles.dot}>.</span>
+        </Link>
+        <button
+          className={styles.menuBtn}
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </header>
+
+      {/* Overlay for mobile */}
+      {isMobileMenuOpen && (
+        <div
+          className={styles.sidebarOverlay}
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
+      <aside
+        className={`${styles.sidebar} ${
+          isMobileMenuOpen ? styles.sidebarOpen : ""
+        }`}
+      >
         <div className={styles.sidebarHeader}>
           <Link href="/" className={styles.logo}>
             AD <span className={styles.dot}>.</span>

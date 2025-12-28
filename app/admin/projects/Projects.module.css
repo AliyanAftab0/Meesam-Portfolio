@@ -173,3 +173,39 @@
   border-radius: 10px;
   font-weight: 600;
 }
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .addBtn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .tableContainer {
+    border-radius: 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .projectTable {
+    min-width: 800px; /* Force table width to trigger scroll */
+  }
+
+  .tableHeader, .tableCell {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .modal {
+    width: 95%;
+    padding: 1.5rem;
+    max-height: 90vh; /* Ensure modal fits on screen with keyboard */
+    overflow-y: auto;
+  }
+}
