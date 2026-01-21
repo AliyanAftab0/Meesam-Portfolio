@@ -11,6 +11,7 @@ function ProjectsContent() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
+  const [projectToDelete, setProjectToDelete] = useState<number | null>(null);
   const searchParams = useSearchParams();
 
   // Track uploaded URLs
@@ -27,15 +28,32 @@ function ProjectsContent() {
   }, [searchParams]);
 
   const fetchProjects = async () => {
-    const res = await fetch("/api/projects");
-    const data = await res.json();
-    setProjects(data);
+    try {
+      const res = await fetch("/api/projects");
+      const data = await res.json();
+      setProjects(data);
+    } catch (e) {
+      console.error("Fetch error:", e);
+    }
   };
 
-  const handleDelete = async (id: number) => {
-    if (confirm("Are you sure you want to delete this project?")) {
-      await fetch(`/api/projects?id=${id}`, { method: "DELETE" });
+  const initDelete = (id: number) => {
+    setProjectToDelete(id);
+  };
+
+  const confirmDelete = async () => {
+    if (!projectToDelete) return;
+
+    try {
+      const res = await fetch(`/api/projects?id=${projectToDelete}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Failed to delete");
+      setProjectToDelete(null);
       fetchProjects();
+    } catch (error) {
+      console.error("Delete failed:", error);
+      alert("Failed to delete project");
     }
   };
 
@@ -115,7 +133,7 @@ function ProjectsContent() {
                     </button>
                     <button
                       className={`${styles.actionIcon} ${styles.delete}`}
-                      onClick={() => handleDelete(project.id)}
+                      onClick={() => initDelete(project.id)}
                       title="Delete"
                     >
                       <Trash2 size={16} />
@@ -203,13 +221,20 @@ function ProjectsContent() {
                 onUpload={(url) => setUploadedImageUrl(url)}
               />
 
-              <FileUpload
-                label="Project Video (Optional)"
-                accept="video/*"
-                type="video"
-                defaultValue={editingProject?.video_url}
-                onUpload={(url) => setUploadedVideoUrl(url)}
-              />
+              <div className={styles.inputGroup}>
+                <label className={styles.label}>Social/Video Link</label>
+                <input
+                  type="url"
+                  name="video_url"
+                  className={styles.formInput}
+                  placeholder="https://youtube.com/..., https://tiktok.com/..., or .mp4"
+                  defaultValue={editingProject?.video_url}
+                  onChange={(e) => setUploadedVideoUrl(e.target.value)}
+                />
+                <p className={styles.hint}>
+                  Supports YouTube, TikTok, Instagram, or direct MP4 links
+                </p>
+              </div>
 
               <input
                 name="skills"
@@ -236,6 +261,34 @@ function ProjectsContent() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {projectToDelete && (
+        <div className={styles.modalOverlay}>
+          <div className={`${styles.modal} ${styles.deleteModal}`}>
+            <h2>Delete Project?</h2>
+            <p>
+              Are you sure you want to delete this project? This action cannot
+              be undone.
+            </p>
+            <div className={styles.modalActions}>
+              <button
+                type="button"
+                onClick={() => setProjectToDelete(null)}
+                className={styles.cancelBtn}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={confirmDelete}
+                className={styles.deleteBtn}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       )}

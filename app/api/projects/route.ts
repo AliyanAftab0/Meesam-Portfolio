@@ -63,6 +63,7 @@ export async function DELETE(request: Request) {
     await sql`DELETE FROM projects WHERE id = ${id}`;
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error("DELETE Error:", error);
     return NextResponse.json({ error: "Failed to delete project" }, { status: 500 });
   }
 }

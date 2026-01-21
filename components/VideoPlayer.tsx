@@ -1,7 +1,12 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Play, Pause, Maximize, Volume2 } from "lucide-react";
+import {
+  YouTubeEmbed,
+  TikTokEmbed,
+  InstagramEmbed,
+} from "react-social-media-embed";
 import styles from "./VideoPlayer.module.css";
 
 interface VideoPlayerProps {
@@ -12,7 +17,44 @@ export default function VideoPlayer({ src }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [hasMounted, setHasMounted] = useState(false);
 
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  // Determine platform
+  const isYouTube = src.includes("youtube.com") || src.includes("youtu.be");
+  const isTikTok = src.includes("tiktok.com");
+  const isInstagram = src.includes("instagram.com");
+
+  if (!hasMounted) return null;
+
+  if (isYouTube) {
+    return (
+      <div className={styles.socialContainer}>
+        <YouTubeEmbed url={src} width="100%" />
+      </div>
+    );
+  }
+
+  if (isTikTok) {
+    return (
+      <div className={styles.socialContainer}>
+        <TikTokEmbed url={src} width={325} />
+      </div>
+    );
+  }
+
+  if (isInstagram) {
+    return (
+      <div className={styles.socialContainer}>
+        <InstagramEmbed url={src} width={328} />
+      </div>
+    );
+  }
+
+  // Legacy/Direct Video Player
   const togglePlay = () => {
     if (videoRef.current) {
       if (isPlaying) {

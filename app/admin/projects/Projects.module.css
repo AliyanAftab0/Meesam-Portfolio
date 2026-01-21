@@ -139,6 +139,24 @@
   gap: 1.2rem;
 }
 
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+
 .formInput, .formSelect, .formTextarea {
   background: rgba(255,255,255,0.03);
   border: 1px solid var(--border);
@@ -172,6 +190,47 @@
   padding: 0.8rem 1.5rem;
   border-radius: 10px;
   font-weight: 600;
+}
+
+.deleteModal {
+  max-width: 450px;
+  text-align: center;
+}
+
+.deleteModal h2 {
+  color: #ff4d4d;
+}
+
+.deleteModal p {
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.cancelBtn {
+  background: transparent;
+  color: var(--text-secondary);
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+}
+
+.cancelBtn:hover {
+  border-color: var(--text-secondary);
+  color: var(--foreground);
+}
+
+.deleteBtn {
+  background: #ff4d4d;
+  color: #fff;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.deleteBtn:hover {
+  background: #ff3333;
 }
 /* Mobile responsiveness */
 @media (max-width: 768px) {

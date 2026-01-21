@@ -69,3 +69,10 @@
   transform: scale(1.1);
   color: var(--accent);
 }
+
+.socialContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}

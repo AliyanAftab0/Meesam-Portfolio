@@ -32,7 +32,7 @@ export default function ProjectCard({
       <Link href={`/projects/${id}`} className={styles.link}>
         <div className={styles.imageWrapper}>
           <Image
-            src={image_url}
+            src={image_url || "/placeholder-project.jpg"}
             alt={title}
             width={800}
             height={450}
