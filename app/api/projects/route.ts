@@ -1,5 +1,6 @@
 import { sql } from "@/lib/db";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   try {
@@ -21,6 +22,8 @@ export async function POST(request: Request) {
       RETURNING *
     `;
 
+    revalidatePath("/");
+    revalidatePath("/projects");
     return NextResponse.json(result[0]);
   } catch (error) {
     console.error("POST Error:", error);
@@ -47,6 +50,8 @@ export async function PUT(request: Request) {
       RETURNING *
     `;
 
+    revalidatePath("/");
+    revalidatePath("/projects");
     return NextResponse.json(result[0]);
   } catch (error) {
     return NextResponse.json({ error: "Failed to update project" }, { status: 500 });
@@ -61,6 +66,9 @@ export async function DELETE(request: Request) {
     if (!id) return NextResponse.json({ error: "Missing ID" }, { status: 400 });
 
     await sql`DELETE FROM projects WHERE id = ${id}`;
+    
+    revalidatePath("/");
+    revalidatePath("/projects");
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("DELETE Error:", error);
