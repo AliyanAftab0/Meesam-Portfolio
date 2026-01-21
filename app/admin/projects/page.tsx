@@ -17,7 +17,6 @@ function ProjectsContent() {
   // Track uploaded URLs
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [uploadedVideoUrl, setUploadedVideoUrl] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("Video");
 
   useEffect(() => {
     fetchProjects();
@@ -63,29 +62,6 @@ function ProjectsContent() {
     setEditingProject(null);
     setUploadedImageUrl("");
     setUploadedVideoUrl("");
-    setSelectedCategory("Video");
-  };
-
-  const getVideoThumbnail = (url: string) => {
-    // YouTube
-    const ytMatch = url.match(/(?:youtu\.be\/|youtube\.com\/.*v=)([^&]+)/);
-    if (ytMatch && ytMatch[1]) {
-      return `https://img.youtube.com/vi/${ytMatch[1]}/maxresdefault.jpg`;
-    }
-    return null;
-  };
-
-  const handleVideoUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const url = e.target.value;
-    setUploadedVideoUrl(url);
-
-    // Auto-fetch thumbnail if image is empty
-    if (!uploadedImageUrl) {
-      const thumbnail = getVideoThumbnail(url);
-      if (thumbnail) {
-        setUploadedImageUrl(thumbnail);
-      }
-    }
   };
 
   return (
@@ -101,7 +77,6 @@ function ProjectsContent() {
             setEditingProject(null);
             setUploadedImageUrl("");
             setUploadedVideoUrl("");
-            setSelectedCategory("Video");
             setIsModalOpen(true);
           }}
         >
@@ -151,7 +126,6 @@ function ProjectsContent() {
                         setEditingProject(project);
                         setUploadedImageUrl(project.image_url);
                         setUploadedVideoUrl(project.video_url || "");
-                        setSelectedCategory(project.category);
                         setIsModalOpen(true);
                       }}
                     >
@@ -224,7 +198,6 @@ function ProjectsContent() {
                 name="category"
                 className={styles.formSelect}
                 defaultValue={editingProject?.category || "Video"}
-                onChange={(e) => setSelectedCategory(e.target.value)}
                 required
               >
                 <option value="Video">Video</option>
@@ -249,40 +222,19 @@ function ProjectsContent() {
               />
 
               <div className={styles.inputGroup}>
-                <label className={styles.label}>
-                  Or Image URL (External Link)
-                </label>
+                <label className={styles.label}>Social/Video Link</label>
                 <input
                   type="url"
+                  name="video_url"
                   className={styles.formInput}
-                  placeholder="https://images.unsplash.com/..."
-                  value={uploadedImageUrl}
-                  onChange={(e) => setUploadedImageUrl(e.target.value)}
+                  placeholder="https://youtube.com/..., https://tiktok.com/..., or .mp4"
+                  defaultValue={editingProject?.video_url}
+                  onChange={(e) => setUploadedVideoUrl(e.target.value)}
                 />
                 <p className={styles.hint}>
-                  Paste a direct image link if upload fails (Required for
-                  Vercel)
+                  Supports YouTube, TikTok, Instagram, or direct MP4 links
                 </p>
               </div>
-
-              {(selectedCategory === "Video" ||
-                selectedCategory === "Motion Graphics") && (
-                <div className={styles.inputGroup}>
-                  <label className={styles.label}>Social/Video Link</label>
-
-                  <input
-                    type="url"
-                    name="video_url"
-                    className={styles.formInput}
-                    placeholder="https://youtube.com/..., https://tiktok.com/..., or .mp4"
-                    defaultValue={editingProject?.video_url}
-                    onChange={handleVideoUrlChange}
-                  />
-                  <p className={styles.hint}>
-                    Supports YouTube, TikTok, Instagram, or direct MP4 links
-                  </p>
-                </div>
-              )}
 
               <input
                 name="skills"

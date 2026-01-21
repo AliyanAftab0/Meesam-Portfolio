@@ -11,6 +11,8 @@
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
     "@types/pg": "^8.16.0",
+    "@types/ws": "^8.18.1",
+    "@vercel/blob": "^2.0.0",
     "better-auth": "^1.4.9",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.45.1",
@@ -23,7 +25,8 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-social-media-embed": "^2.5.18",
-    "uuid": "^13.0.0"
+    "uuid": "^13.0.0",
+    "ws": "^8.19.0"
   },
   "devDependencies": {
     "@types/node": "^20",
