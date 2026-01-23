@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { Video, Layers, PenTool, Youtube, Share2 } from "lucide-react";
-import styles from "./Skills.module.css";
 
 const skills = [
   {
@@ -33,14 +32,18 @@ const skills = [
 
 export default function Skills() {
   return (
-    <section id="services" className={styles.skills}>
-      <div className="container">
-        <div className={styles.header}>
-          <span className={styles.label}>Expertise</span>
-          <h2 className={styles.title}>Crafted with Intention.</h2>
+    <section id="services" className="py-24">
+      <div className="container mx-auto px-6">
+        <div className="mb-16">
+          <span className="text-[0.8rem] uppercase tracking-[0.2em] text-accent mb-4 block">
+            Expertise
+          </span>
+          <h2 className="text-[clamp(2.5rem,5vw,3.5rem)]">
+            Crafted with Intention.
+          </h2>
         </div>
 
-        <div className={styles.grid}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {skills.map((skill, index) => (
             <motion.div
               key={skill.title}
@@ -48,11 +51,13 @@ export default function Skills() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: index * 0.1 }}
-              className={styles.skillCard}
+              className="bg-surface p-8 rounded-[24px] border border-border transition-all duration-400 ease-smooth hover:border-accent hover:-translate-y-[5px] hover:bg-surface-hover"
             >
-              <div className={styles.iconWrapper}>{skill.icon}</div>
-              <h3 className={styles.skillTitle}>{skill.title}</h3>
-              <p className={styles.skillDesc}>{skill.description}</p>
+              <div className="text-accent mb-6">{skill.icon}</div>
+              <h3 className="text-xl mb-2">{skill.title}</h3>
+              <p className="text-[0.95rem] text-text-secondary leading-[1.5]">
+                {skill.description}
+              </p>
             </motion.div>
           ))}
         </div>

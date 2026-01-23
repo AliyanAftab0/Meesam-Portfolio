@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import styles from "./Services.module.css";
 
 const defaultServices = [
   {
@@ -34,9 +33,9 @@ export default function Services({ servicesData }: ServicesProps) {
   const displayServices = servicesData?.length ? servicesData : defaultServices;
 
   return (
-    <section id="services" className={styles.section}>
-      <div className="container">
-        <div className={styles.grid}>
+    <section id="services" className="py-24 bg-surface">
+      <div className="container mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {displayServices.map((service, index) => (
             <motion.div
               key={service.title}
@@ -44,11 +43,13 @@ export default function Services({ servicesData }: ServicesProps) {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className={styles.card}
+              className="p-12 border border-border transition-all duration-400 ease-smooth hover:bg-background"
             >
-              <div className={styles.content}>
-                <h3 className={styles.serviceTitle}>{service.title}</h3>
-                <p className={styles.serviceDesc}>{service.description}</p>
+              <div>
+                <h3 className="text-2xl mb-2">{service.title}</h3>
+                <p className="text-text-secondary text-base leading-relaxed">
+                  {service.description}
+                </p>
               </div>
             </motion.div>
           ))}

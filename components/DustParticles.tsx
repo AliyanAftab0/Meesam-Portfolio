@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import styles from "./DustParticles.module.css";
 
 export default function DustParticles() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -95,5 +94,10 @@ export default function DustParticles() {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className={styles.canvas} />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 pointer-events-none z-[1]"
+    />
+  );
 }

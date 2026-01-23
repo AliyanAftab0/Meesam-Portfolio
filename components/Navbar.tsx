@@ -3,8 +3,6 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { clsx } from "clsx";
-import styles from "./Navbar.module.css";
 
 const navLinks = [
   { name: "Work", href: "/#work" },
@@ -21,24 +19,33 @@ export default function Navbar() {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className={styles.navbar}
+      className="fixed top-0 left-0 w-full py-6 z-[1000] backdrop-blur-xl bg-background/70 border-b border-border"
     >
-      <div className={clsx("container", styles.navContainer)}>
-        <Link href="/" className={styles.logo}>
-          AD <span className={styles.dot}>.</span>
+      <div className="container mx-auto flex justify-between items-center px-6">
+        <Link
+          href="/"
+          className="font-heading text-2xl font-bold tracking-tighter text-foreground"
+        >
+          AD <span className="text-accent">.</span>
         </Link>
 
-        <ul className={styles.navLinks}>
+        <ul className="hidden md:flex gap-10">
           {navLinks.map((link) => (
             <li key={link.name}>
-              <Link href={link.href} className={styles.navLink}>
+              <Link
+                href={link.href}
+                className="text-sm font-normal text-text-secondary transition-colors duration-300 ease-smooth hover:text-foreground"
+              >
                 {link.name}
               </Link>
             </li>
           ))}
         </ul>
 
-        <Link href="/projects" className={styles.cta}>
+        <Link
+          href="/projects"
+          className="text-sm font-medium py-2.5 px-6 border border-border rounded-full transition-all duration-300 ease-smooth hover:bg-foreground hover:text-background"
+        >
           Projects
         </Link>
       </div>

@@ -1,87 +1,134 @@
-import { neon } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
-import { Project } from "@/types/project";
-import * as schema from "./schema";
+import { client } from './sanity'
+import { groq } from 'next-sanity'
 
-let sqlInstance: any = null;
-let dbInstance: any = null;
-
-const getSql = () => {
-  if (sqlInstance) return sqlInstance;
-  const url = process.env.DATABASE_URL;
-  if (!url) {
-    throw new Error("DATABASE_URL is not defined in .env.local");
-  }
-  sqlInstance = neon(url);
-  return sqlInstance;
-};
-
-export const db = drizzle(getSql(), { schema });
-
-// Use this for all raw queries
-export const sql = (...args: any[]) => (getSql() as any)(...args);
-
-export async function getFeaturedProjects(): Promise<Project[]> {
-  try {
-    const projects = await sql`
-      SELECT * FROM projects 
-      WHERE is_featured = true 
-      ORDER BY created_at DESC 
-      LIMIT 6
-    `;
-    return projects as Project[];
-  } catch (error) {
-    console.error("Error fetching featured projects:", error);
-    return [];
-  }
+// Projects
+export async function getAllProjects() {
+  if (!client) return []
+  return client.fetch(
+    groq`*[_type == "project"] | order(_createdAt desc) {
+      _id,
+      "id": _id,
+      title,
+      "slug": slug.current,
+      category,
+      description,
+      "image_url": thumbnail.asset->url,
+      "video_url": videoUrl,
+      "video_file": videoFile.asset->url,
+      skills,
+      "is_featured": isFeatured,
+      "created_at": _createdAt
+    }`
+  )
 }
 
-export async function getAllProjects(): Promise<Project[]> {
-  try {
-    const projects = await sql`
-      SELECT * FROM projects 
-      ORDER BY created_at DESC
-    `;
-    return projects as Project[];
-  } catch (error) {
-    console.error("Error fetching all projects:", error);
-    return [];
-  }
+export async function getFeaturedProjects() {
+  if (!client) return []
+  return client.fetch(
+    groq`*[_type == "project" && isFeatured == true] | order(_createdAt desc) [0...6] {
+      _id,
+      "id": _id,
+      title,
+      "slug": slug.current,
+      category,
+      description,
+      "image_url": thumbnail.asset->url,
+      "video_url": videoUrl,
+      "video_file": videoFile.asset->url,
+      skills,
+      "is_featured": isFeatured,
+      "created_at": _createdAt
+    }`
+  )
 }
 
-export async function getProjectById(id: string): Promise<Project | null> {
-  try {
-    const projects = await sql`
-      SELECT * FROM projects 
-      WHERE id = ${id}
-      LIMIT 1
-    `;
-    return projects[0] as Project || null;
-  } catch (error) {
-    console.error("Error fetching project by id:", error);
-    return null;
-  }
+export async function getProjectById(id: string) {
+  if (!client) return null
+  return client.fetch(
+    groq`*[_type == "project" && _id == $id][0] {
+      _id,
+      "id": _id,
+      title,
+      "slug": slug.current,
+      category,
+      description,
+      "image_url": thumbnail.asset->url,
+      "video_url": videoUrl,
+      "video_file": videoFile.asset->url,
+      skills,
+      "is_featured": isFeatured,
+      "created_at": _createdAt
+    }`,
+    { id }
+  )
 }
 
-export async function getSettings() {
-  try {
-    const settings = await sql`SELECT key, value FROM site_settings`;
-    return settings.reduce((acc: any, { key, value }: { key: string; value: any }) => {
-      acc[key] = value;
-      return acc;
-    }, {});
-  } catch (error) {
-    console.error("Error fetching settings:", error);
-    return {};
-  }
-}
-
+// Services
 export async function getServices() {
-  try {
-    const services = await sql`SELECT * FROM services ORDER BY display_order ASC`;
-    return services;
-  } catch (error) {
-    console.error("Error fetching services:", error);
-    return [];
+  if (!client) return []
+  return client.fetch(
+    groq`*[_type == "service"] | order(order asc) {
+      _id,
+      title,
+      description,
+      icon
+    }`
+  )
+}
+
+// Site Settings
+export async function getSettings() {
+  if (!client) {
+    return {
+      about_p1: 'Professional Video Editor and Motion Graphics Artist with a passion for storytelling.',
+      about_p2: 'Specializing in cinematic edits, high-end commercials, and engaging social media content.',
+      about_p3: 'Based in Pakistan, working with clients globally.',
+      contact_email: 'hello@example.com',
+      instagram_url: '#',
+      youtube_url: '#',
+      tiktok_url: '#'
+    }
   }
+
+  const settings = await client.fetch(
+    groq`*[_type == "siteSettings"][0] {
+      "hero_tagline": heroTagline,
+      "hero_title": heroTitle,
+      "hero_description": heroDescription,
+      "profile_image": profileImage.asset->url,
+      "about_title": aboutTitle,
+      "about_p1": aboutP1,
+      "about_p2": aboutP2,
+      "about_p3": aboutP3,
+      "contact_email": contactEmail,
+      "instagram_url": instagramUrl,
+      "youtube_url": youtubeUrl,
+      "tiktok_url": tiktokUrl
+    }`
+  )
+  
+  // Return default values if no settings found
+  return settings || {
+    about_p1: 'Professional Video Editor and Motion Graphics Artist with a passion for storytelling.',
+    about_p2: 'Specializing in cinematic edits, high-end commercials, and engaging social media content.',
+    about_p3: 'Based in Pakistan, working with clients globally.',
+    contact_email: 'hello@example.com',
+    instagram_url: '#',
+    youtube_url: '#',
+    tiktok_url: '#'
+  }
+}
+
+// Testimonials
+export async function getTestimonials() {
+  if (!client) return []
+  return client.fetch(
+    groq`*[_type == "testimonial"] | order(order asc) {
+      _id,
+      name,
+      role,
+      content,
+      rating
+    }`
+  )
 }
